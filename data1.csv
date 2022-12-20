@@ -1,0 +1,11 @@
+url,url_length,hostname_length,count-https,count-,count@,count-www,count-digits,count-letters,count_dir,label
+https://www.google.com,22,14,1,0,0,1,0,17,0,0
+http://gangainsulations.com/alert/GD/,37,20,0,0,0,0,0,30,3,1
+https://www.facebook.com,24,16,1,0,0,1,0,19,0,0
+https://www.baidu.com,21,13,1,0,0,1,0,16,0,0
+https://www.wikipedia.org,25,17,1,0,0,1,0,20,0,0
+http://faboleena.com/js/infortis/jquery/plugins/minicolors/Ameli/PortailAS/appmanager/PortailAS/assure_somtc=true/018ad7352b902f40e0e37b0f53cf47fc/index_2.html,159,13,0,0,0,0,21,118,12,1
+http://faboleena.com/js/infortis/jquery/plugins/minicolors/Ameli/PortailAS/appmanager/PortailAS/assure_somtc=true/018ad7352b902f40e0e37b0f53cf47fc/,147,13,0,0,0,0,20,109,12,1
+https://www.google.co.in,24,16,1,0,0,1,0,18,0,0
+https://www.qq.com,18,10,1,0,0,1,0,13,0,0
+https://www.amazon.com,22,14,1,0,0,1,0,17,0,0

@@ -1,0 +1,11 @@
+url,url_length,hostname_length,count-https,count-,count@,count-www,count-digits,count-letters,count_dir,prediction,confidence_score
+https://www.google.ca,21,13,1,0,0,1,0,16,0,0,0.9993579827762903
+https://www.ebay.com,20,12,1,0,0,1,0,15,0,0,0.9996996175002673
+http://gospelchurchofchrist.org/best_update/products/viewer.php,63,24,0,0,0,0,0,54,3,1,0.9999999986334744
+https://www.microsoft.com,25,17,1,0,0,1,0,20,0,1,0.9867530457136262
+https://www.bing.com,20,12,1,0,0,1,0,15,0,0,0.9996996175002673
+https://www.imgur.com,21,13,1,0,0,1,0,16,0,0,0.9993579827762903
+https://www.ok.ru,17,9,1,0,0,1,0,12,0,0,0.9999692581305888
+http://orlandoresorthouses.com/wwe/script/mail.htm?_pageLabel=page_log,70,23,0,0,0,0,0,58,3,1,0.9999999999616802
+http://knitwear.ru/Linkedlnen.html,34,11,0,0,0,0,0,28,1,1,0.6882806926182388
+http://dizcorona.com/Via/Validation,35,13,0,0,0,0,0,29,2,1,0.8506181143852066
