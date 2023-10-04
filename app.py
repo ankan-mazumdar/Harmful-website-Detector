@@ -70,30 +70,30 @@ def main():
     #     return df
 
     def predict(df, count):
-    data = df.copy()
-    data = data.drop("url", axis=1)
-    Y = data['label']
-    X = data.drop('label', axis=1)
-    if count == 1:
-        pickle_in = open("LR_model.pkl", "rb")
-    else:
-        pickle_in = open("LR_model_new.pkl", "rb")
-    clf = pickle.load(pickle_in)
-    prediction = clf.predict(X)
-    prob = clf.predict_proba(X)
-    confidence_score = []
-    for i in range(len(prob)):
-        if prediction[i] == 0:
-            confidence_score.append(prob[i][0])
-        else:
-            confidence_score.append(prob[i][1])
-
-    df = df.drop('label', axis=1)
-    df['prediction'] = prediction
-    df['confidence_score'] = confidence_score
-    score = clf.score(X, Y)
-    st.write('Model Accuracy is : ', score)
-    return df
+		data = df.copy()
+		data = data.drop("url", axis=1)
+		Y = data['label']
+		X = data.drop('label', axis=1)
+		if count == 1:
+			pickle_in = open("LR_model.pkl", "rb")
+		else:
+			pickle_in = open("LR_model_new.pkl", "rb")
+		clf = pickle.load(pickle_in)
+		prediction = clf.predict(X)
+		prob = clf.predict_proba(X)
+		confidence_score = []
+		for i in range(len(prob)):
+			if prediction[i] == 0:
+				confidence_score.append(prob[i][0])
+			else:
+				confidence_score.append(prob[i][1])
+	
+		df = df.drop('label', axis=1)
+		df['prediction'] = prediction
+		df['confidence_score'] = confidence_score
+		score = clf.score(X, Y)
+		st.write('Model Accuracy is : ', score)
+		return df
 
     def retrain(df):
         i = 1
