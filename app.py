@@ -45,7 +45,7 @@ def main():
     count = 0
     def predict(df):
         data = df
-        data = data.drop("url",1)
+        data = data.drop("url",axis=1)
         Y = data['label']
         X = data.drop('label', axis=1)
         if count==1:
@@ -72,8 +72,8 @@ def main():
     def retrain(df):
         i = 1
         data = df
-        data = data.drop("url",1)
-        data = data.drop("confidence_score",1)
+        data = data.drop("url",axis=1)
+        data = data.drop("confidence_score",axis=1)
         Y = data['prediction']
         X = data.drop('prediction', axis=1)
         clf_new = LogisticRegression(warm_start=True)
