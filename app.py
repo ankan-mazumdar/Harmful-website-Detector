@@ -57,7 +57,7 @@ def main():
 
     def retrain(df):
         data = df.copy()
-        data = data.drop(["url", "prediction", "confidence_score"], axis=1)
+        data = data.drop(["url",  "label","prediction", "confidence_score"], axis=1)
         Y = df['prediction']
         X = data
         clf_new = LogisticRegression(warm_start=True)
