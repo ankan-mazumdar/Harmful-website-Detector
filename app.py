@@ -94,8 +94,7 @@ def main():
                 acc = retrain(new_df)
     
         with st.expander("Don't trust the model predictions? "):
-            train_data = df.drop("label",1)
-            train_data = train_data.drop("url",1)
+            train_data = df.drop(["url", "label", "confidence_score"], axis=1)
             pickle_in = open("LR_model.pkl","rb")
             clf = pickle.load(pickle_in)
             explainer = lime_tabular.LimeTabularExplainer(
@@ -106,8 +105,10 @@ def main():
             )
             for i in range(10):
                 exp = explainer.explain_instance(
-                    data_row = train_data.iloc[i],
-                    predict_fn = clf.predict_proba
+                    # data_row = train_data.iloc[i],
+                    # predict_fn = clf.predict_proba
+					predict_fn=lambda x: clf.predict_proba(x),
+					num_features=10  # Ensure the correct number of features                    
                 )
                 fig = exp.as_pyplot_figure()
                 st.pyplot(fig=fig,)
