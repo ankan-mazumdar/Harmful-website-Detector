@@ -93,24 +93,24 @@ def main():
                 st.session_state.button_state = True 
                 acc = retrain(new_df)
     
-		with st.expander("Don't trust the model predictions? "):
-			train_data = df.drop(["url", "label", "confidence_score"], axis=1)
-			pickle_in = open("LR_model.pkl", "rb")
-			clf = pickle.load(pickle_in)
-			explainer = lime_tabular.LimeTabularExplainer(
-				training_data=np.array(train_data),
-				feature_names=train_data.columns,
-				class_names=['Benign', 'Malicious'],
-				mode='classification'
+	with st.expander("Don't trust the model predictions? "):
+		train_data = df.drop(["url", "label", "confidence_score"], axis=1)
+		pickle_in = open("LR_model.pkl", "rb")
+		clf = pickle.load(pickle_in)
+		explainer = lime_tabular.LimeTabularExplainer(
+			training_data=np.array(train_data),
+			feature_names=train_data.columns,
+			class_names=['Benign', 'Malicious'],
+			mode='classification'
+		)
+		for i in range(10):
+			exp = explainer.explain_instance(
+				data_row=train_data.iloc[i],
+				predict_fn=lambda x: clf.predict_proba(x),
+				num_features=10  # Ensure the correct number of features
 			)
-			for i in range(10):
-				exp = explainer.explain_instance(
-					data_row=train_data.iloc[i],
-					predict_fn=lambda x: clf.predict_proba(x),
-					num_features=10  # Ensure the correct number of features
-				)
-				fig = exp.as_pyplot_figure()
-				st.pyplot(fig=fig)
+			fig = exp.as_pyplot_figure()
+			st.pyplot(fig=fig)
 
 
 
