@@ -105,7 +105,7 @@ def main():
             )
             for i in range(10):
                 exp = explainer.explain_instance(
-                    # data_row = train_data.iloc[i],
+                    data_row = train_data.iloc[i],
                     # predict_fn = clf.predict_proba
 					predict_fn=lambda x: clf.predict_proba(x),
 					num_features=10  # Ensure the correct number of features                    
