@@ -57,7 +57,7 @@ def main():
 
     def retrain(df):
         data = df.copy()
-        data = data.drop(["url",  "label","prediction", "confidence_score"], axis=1)
+        data = data.drop(["url",  "label"], axis=1)
         Y = df['prediction']
         X = data
         clf_new = LogisticRegression(warm_start=True)
@@ -94,7 +94,7 @@ def main():
                 acc = retrain(new_df)
     
         with st.expander("Don't trust the model predictions? "):
-            train_data = df.drop(["url", "label",  "prediction" , "confidence_score"], axis=1)
+            train_data = df.drop(["url", "label"], axis=1)
             pickle_in = open("LR_model.pkl","rb")
             clf = pickle.load(pickle_in)
             explainer = lime_tabular.LimeTabularExplainer(
@@ -107,8 +107,8 @@ def main():
                 exp = explainer.explain_instance(
                     data_row = train_data.iloc[i],
                     # predict_fn = clf.predict_proba
-					predict_fn=lambda x: clf.predict_proba(x),
-					num_features=10  # Ensure the correct number of features                    
+		    predict_fn=lambda x: clf.predict_proba(x),
+		    num_features=10  # Ensure the correct number of features                    
                 )
                 fig = exp.as_pyplot_figure()
                 st.pyplot(fig=fig,)
