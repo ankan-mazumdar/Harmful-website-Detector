@@ -94,7 +94,7 @@ def main():
                 acc = retrain(new_df)
     
         with st.expander("Don't trust the model predictions? "):
-            train_data = df.drop(["url", "label"], axis=1)
+            train_data = df.drop(["prediction", "confidence_score"], axis=1)
             pickle_in = open("LR_model.pkl","rb")
             clf = pickle.load(pickle_in)
             explainer = lime_tabular.LimeTabularExplainer(
