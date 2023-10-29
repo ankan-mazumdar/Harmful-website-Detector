@@ -9,8 +9,12 @@ from sklearn.linear_model import LogisticRegression
 from st_aggrid import AgGrid
 from st_aggrid.shared import GridUpdateMode, DataReturnMode
 from st_aggrid.grid_options_builder import GridOptionsBuilder
+import signal
+from st_aggrid.grid_options_builder import GridOptionsBuilder
+import signal
 
 def main():
+    #signal.signal(signal.SIGINT, signal.SIG_DFL)
     st.title("Automated Data Labelling")
     st.subheader("Malicious URL Detection") 
     st.markdown(
@@ -69,37 +73,90 @@ def main():
     #     st.write('Model Accuracy is : ',score)
     #     return df
 
-    def predict(df, count):
-	data = df.copy()
-	data = data.drop("url", axis=1)
-	Y = data['label']
-	X = data.drop('label', axis=1)
-	if count == 1:
-		pickle_in = open("LR_model.pkl", "rb")
-	else:
-		pickle_in = open("LR_model_new.pkl", "rb")
-	clf = pickle.load(pickle_in)
-	prediction = clf.predict(X)
-	prob = clf.predict_proba(X)
-	confidence_score = []
-	for i in range(len(prob)):
-		if prediction[i] == 0:
-			confidence_score.append(prob[i][0])
-		else:
-			confidence_score.append(prob[i][1])
-	
-	df = df.drop('label', axis=1)
-	df['prediction'] = prediction
-	df['confidence_score'] = confidence_score
-	score = clf.score(X, Y)
-	st.write('Model Accuracy is : ', score)
-	return df
+    # def predict(df, count):
+    #     data = df.copy()
+    #     data = data.drop("url", axis=1)
+    #     Y = data['label']
+    #     X = data.drop('label', axis=1)
+    #     if count == 1:
+    #         pickle_in = open("LR_model.pkl", "rb")
+    #     else:
+    #         pickle_in = open("LR_model_new.pkl", "rb")
+    #     clf = pickle.load(pickle_in)
+    #     prediction = clf.predict(X)
+    #     prob = clf.predict_proba(X)
+    #     confidence_score = []
+    #     for i in range(len(prob)):
+    #         if prediction[i] == 0:
+    #             confidence_score.append(prob[i][0])
+    #         else:
+    #             confidence_score.append(prob[i][1])
+           
+    #     df = df.drop('label', axis=1)
+    #     df['prediction'] = prediction
+    #     df['confidence_score'] = confidence_score
+    #     score = clf.score(X, Y)
+    #     st.write('Model Accuracy is : ', score)
+    #     return df
+    # def predict(df, count):
+    #     data = df.copy()
+    #     data = data.drop("url", axis=1)
+    #     Y = data['label']
+    #     X = data.drop('label', axis=1)
+    #     if count == 1:
+    #         pickle_in = open("LR_model.pkl", "rb")
+    #     else:
+    #         pickle_in = open("LR_model_new.pkl", "rb")
+    #     clf = pickle.load(pickle_in)
+    #     prediction = clf.predict(X)
+    #     prob = clf.predict_proba(X)
+    #     confidence_score = []
+    #     for i in range(len(prob)):
+    #         if prediction[i] == 0:
+    #             confidence_score.append(prob[i][0])
+    #         else:
+    #             confidence_score.append(prob[i][1])
+            
+    #     df = df.drop(['label', 'confidence_score'], axis=1)
+    #     df['prediction'] = prediction
+    #     df['confidence_score'] = confidence_score
+    #     score = clf.score(X, Y)
+    #     st.write('Model Accuracy is : ', score)
+    #     return df
 
+    def predict(df, count):
+        data = df.copy()
+        data = data.drop("url", axis=1)
+        Y = data['label']
+        X = data.drop('label', axis=1)
+        if count == 1:
+            pickle_in = open("LR_model.pkl", "rb")
+        else:
+            pickle_in = open("LR_model_new.pkl", "rb")
+        clf = pickle.load(pickle_in)
+        prediction = clf.predict(X)
+        prob = clf.predict_proba(X)
+        confidence_score = []
+        for i in range(len(prob)):
+            if prediction[i] == 0:
+                confidence_score.append(prob[i][0])
+            else:
+                confidence_score.append(prob[i][1])
+
+        df['prediction'] = prediction
+        if 'confidence_score' in df.columns:
+            df = df.drop('confidence_score', axis=1)
+        df['confidence_score'] = confidence_score
+        df = df.drop('label', axis=1)
+        score = clf.score(X, Y)
+        st.write('Model Accuracy is : ', score)
+        return df    
+    
     def retrain(df):
         i = 1
         data = df
-        data = data.drop("url",1)
-        data = data.drop("confidence_score",1)
+        data = data.drop("url", axis=1)
+        data = data.drop("confidence_score",axis=1)
         Y = data['prediction']
         X = data.drop('prediction', axis=1)
         clf_new = LogisticRegression(warm_start=True)
@@ -147,15 +204,23 @@ def main():
                 acc = retrain(new_df)
     
 
-        with st.expander("Don't trust the model predictions? "):
-            train_data = df.drop("label",1)
-            train_data = train_data.drop("url",1)
-            pickle_in = open("LR_model.pkl","rb")
+        with st.expander("Check interpretable explainaton how features are "):
+            #train_data = df.drop("label",1)
+            #train_data = train_data.drop("url",1)
+            train_data = df.copy()  # Make a copy of the DataFrame to avoid modifying the original
+            train_data = train_data.drop("url", axis=1)  # Drop the "url" column
+            train_data = train_data.drop('label', axis=1)
+            train_data = train_data.drop('confidence_score', axis=1)
+            train_data = train_data.drop('prediction', axis=1)
+            if count == 1:
+                pickle_in = open("LR_model.pkl", "rb")
+            else:
+                pickle_in = open("LR_model_new.pkl", "rb")
             clf = pickle.load(pickle_in)
             explainer = lime_tabular.LimeTabularExplainer(
                 training_data = np.array(train_data),
                 feature_names = train_data.columns,
-                class_names = ['Benign','Malicious'],
+                class_names = ['Legit','Malicious'],
                 mode = 'classification'
             )
             for i in range(10):
