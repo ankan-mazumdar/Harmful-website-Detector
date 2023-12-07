@@ -1,5 +1,4 @@
 # Automated_Data_Labelling_of_URL
-Deployed URL link : https://ankan-mazumdar-harmful-website-detector-app-k7qjxx.streamlit.app/
 
 FUNCTIONING OF WEB APPLICATION
 
